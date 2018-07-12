@@ -1,0 +1,56 @@
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  &__content {
+    position: relative;
+    overflow: hidden;
+  }
+  &__content-inner {
+    position: relative;
+    flex-wrap: nowrap;
+    display: flex;
+    transition: 0.5s ease;
+  }
+
+  &__button {
+    flex: 0 0 auto;
+    font-size: 20pt;
+    color: #FFF;
+    margin: 4px;
+    width: 48px;
+    height: 48px;
+    background-color: rgb(89,177,220);
+    border-radius: 1000px;
+    border: none;
+    box-shadow: 0 0 4px 2px rgba(125,125,125,0.4);
+    transition: all 0.3s ease;
+  }
+  &__button:hover {
+    opacity: 0.8;
+  }
+  &__button_hidden {
+    opacity: 0;
+  }
+  &__button_hidden:hover {
+    opacity: 0;
+  }
+  &__button:active {
+    box-shadow: 0 0 4px -2px rgba(125,125,125,0.6);
+  }
+  &__button:focus {
+    outline: none;
+  }
+  
+  @media screen and (max-device-width: 768px) {
+    &__content {
+      overflow-x: scroll;
+    }
+    &__button {
+      display: none;
+    }
+  }
+}
+
+
