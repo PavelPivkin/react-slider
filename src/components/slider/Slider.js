@@ -1,62 +1,64 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import './slider.css'
+import React from 'react';
+import SliderComponent from "./SliderComponent";
+import PropTypes from 'prop-types';
+
 
 class Slider extends React.Component {
+
     constructor(props) {
         super(props);
-        this.content = React.createRef();
+        this.state = {
+            currentPosition: 0,
+            isLoading: false,
+            error: null,
+            hideRightButton: false,
+            hideLeftButton: true
+        };
+        this.shiftPercantage = 1;
     }
 
-    render () {
-        return (
-            <div className={['slider', this.props.className].join(' ')}>
-
-                <button onClick={() => this.props.onButtonClick(this.content.current.scrollWidth, this.content.current.offsetWidth, 1)}
-                    className={
-                        [
-                            'slider__button slider__button_left',
-                            this.props.hideLeftButton ? 'slider__button_hidden' : null
-                        ].join(' ')}
-                >
-                    <i className={'fas fa-angle-left'}/>
-                </button>
-                <div className={'slider__content'}>
-                    <div style={{transform: 'translateX(' + this.props.position + 'px)'}}
-                         ref={this.content}
-                         className={'slider__content-inner'}>
-                        {this.props.children}
-                    </div>
-                </div>
-
-                <button onClick={() => this.props.onButtonClick(this.content.current.scrollWidth, this.content.current.offsetWidth, -1)}
-                        className={
-                            [
-                                'slider__button slider__button_right',
-                                this.props.hideRightButton ? 'slider__button_hidden' : null
-                            ].join(' ')
-                        }
-                >
-                    <i className={'fas fa-angle-right'}/>
-                </button>
-
-            </div>
-        )
+    onButtonClick = (scrollWidth, offsetWidth, direction) => {
+        let shift = offsetWidth * this.shiftPercantage * direction;
+        let nextPosition = this.state.currentPosition + shift;
+        if (nextPosition <= 0) {
+            if (nextPosition <= offsetWidth - scrollWidth) {
+                this.setState({
+                    currentPosition: offsetWidth - scrollWidth,
+                    hideRightButton: true,
+                    hideLeftButton: false
+                });
+                return;
+            } else {
+                this.setState ({
+                    currentPosition: nextPosition,
+                    hideRightButton: false,
+                    hideLeftButton: false
+                });
+            }
+        } else {
+            this.setState({
+                currentPosition: 0,
+                hideLeftButton: true
+            });
+        }
     }
 
+
+
+
+
+    render() {
+        return <SliderComponent
+            position={this.state.currentPosition}
+            onButtonClick={this.onButtonClick}
+            hideRightButton={this.state.hideRightButton}
+            hideLeftButton={this.state.hideLeftButton}
+        >{this.props.items}</SliderComponent>
+    }
 }
 
 Slider.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.object,
-    onButtonClick: PropTypes.func,
-    position: PropTypes.number.isRequired,
-    leftButton: PropTypes.bool,
-    rightButton: PropTypes.bool
-};
-
-Slider.defaultProps = {
-    className: ''
+    items: PropTypes.array
 };
 
 export default Slider
