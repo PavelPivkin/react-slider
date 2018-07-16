@@ -8,15 +8,11 @@ class Slider extends React.Component {
         this.content = React.createRef();
     }
 
-    componentDidMount() {
-        this.props.onMount(this.content.current.scrollWidth, this.content.current.offsetWidth);
-    }
-
     render () {
         return (
             <div className={['slider', this.props.className].join(' ')}>
 
-                <button onClick={() => this.props.onButtonClick(this.props.shift)}
+                <button onClick={() => this.props.onButtonClick(this.content.current.scrollWidth, this.content.current.offsetWidth, 1)}
                     className={
                         [
                             'slider__button slider__button_left',
@@ -33,7 +29,7 @@ class Slider extends React.Component {
                     </div>
                 </div>
 
-                <button onClick={() => this.props.onButtonClick(-this.props.shift)}
+                <button onClick={() => this.props.onButtonClick(this.content.current.scrollWidth, this.content.current.offsetWidth, -1)}
                         className={
                             [
                                 'slider__button slider__button_right',
@@ -54,17 +50,13 @@ Slider.propTypes = {
     className: PropTypes.string,
     children: PropTypes.object,
     onButtonClick: PropTypes.func,
-    onMount: PropTypes.func.isRequired,
     position: PropTypes.number.isRequired,
-    shift: PropTypes.number.isRequired,
     leftButton: PropTypes.bool,
     rightButton: PropTypes.bool
-}
+};
 
 Slider.defaultProps = {
-    className: '',
-    withIndicator: true,
-    withButtons: false
-}
+    className: ''
+};
 
 export default Slider
